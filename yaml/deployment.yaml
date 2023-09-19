@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admission-webhook-deployment
+  labels:
+    app: admission-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admission-webhook
+  template:
+    metadata:
+      labels:
+        app: admission-webhook
+    spec:
+#      serviceAccount: admission-webhook-sa
+      containers:
+        - name: admission-webhook
+          image: jusene/admission-webhook:v1
+          imagePullPolicy: Always
+#          args:
+#            - --tlsCertFile=/etc/webhook/certs/tls.crt
+#            - --tlsKeyFile=/etc/webhook/certs/tls.key
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: admission-webhook-certs

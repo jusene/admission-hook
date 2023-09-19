@@ -1,0 +1,30 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: admission-mutating-webhook
+  labels:
+    app: admission-webhook
+webhooks:
+  - name: admission-mutating.iguming.net
+    admissionReviewVersions:
+      - "v1"
+      - "v1beta1"
+    sideEffects: None
+    clientConfig:
+      service:
+        name: admission-webhook-svc
+        namespace: default
+        path: "/custom-resource"
+      caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUREekNDQWZlZ0F3SUJBZ0lVTmRqWHl0aDUxYnpoSG9GZ0FoU1NPYjBBWkZZd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0Z6RVZNQk1HQTFVRUF3d01ZV1J0YVhOemFXOXVYMk5oTUI0WERUSXpNRGd5T1RBMU5EZ3lObG9YRFRJMApNRGd5T0RBMU5EZ3lObG93RnpFVk1CTUdBMVVFQXd3TVlXUnRhWE56YVc5dVgyTmhNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF3N0lpRXhEVzRlVzIxOENqUXNmZW1SRHlIcnB3UW96cEZxWFAKMEJ2aDUwaVhnNzZ5UFIrM2cxejZ3bFd1VkJVM2JORmNXT1M1K1liT21ZRWlpeWxGekZmNmlkNkxIZ3lCcWdFNgpuRllnNmExRjhsUUtvNFVicUJyYzZWc1M5YVFMWjJKcHI1dlhTTk1jWCtYQXc1WXprQlg2SzFxVzMwZEtlbzN4CldLTkxPYXBEUGNRNm15S0x2eDJzV3l6cFhkS1JxT3ZuK2Y1cGkzTDIwTTFEOXhnZ0x3dWJXaDU3ek4vNTVOTkUKeVVsS3FxbzlpdGNFRE5XUEJ1aVZoZ1VmbTEyNDFPVWJHYVRWb3NtT3hwZ05Nd1lWY2o5eUc4NVp4am9RTDJEdgp3dzNJZldGcmtwdWNGc0FvOUVCOU5VUElVaWpZcFNQa28wbXZZRVdNaktqY05hYW5Nd0lEQVFBQm8xTXdVVEFkCkJnTlZIUTRFRmdRVTY3NytIdVRpQjN6dHEvWlFid1pBOGkweGpiY3dId1lEVlIwakJCZ3dGb0FVNjc3K0h1VGkKQjN6dHEvWlFid1pBOGkweGpiY3dEd1lEVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQwpBUUVBQ05SQUV1a2gzbHp6dUJ5c2hNNjY5cFhCMHd2WHZLUTdJd21KdXFORWtuSGsrMGZvWnA3MVUyZDVvWjhCCmt4d2lhRmdKQ21rbGFrTTl6S0ZENm80aXBwMmxRV0kveUpaUUxCaXp2UlBGT0t5QXlSdFV1NFFZSDNZeEQyYWkKQlJDdEJUbElpWjBDN3hHNUdmWnZuTUlnZll1OEh0VEd3SXlPSGV4cXU3clNuL1ROT1RzNVlHQkFXSm1adTk0Wgp0ZUNNd0x2cG1IMmpJVERIVTNtQytKb2lkR2xSbnBwc3ZiM2xrMmtzc202OHJNZGQxY1VnS1Y2ZGxveHVUbVpjCjdmRW4yRHRaYjVBaE9Jc25RaWJtenU3cFFyby9QOGk2OUZDb0JWdFZSQmE4d2V2UVBZc0hOUms3Zm9XWk9CdEsKdjA1STN5bjlSS1RobHBodFU2L3J1dTU2OEE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+    rules:
+      - operations: ["CREATE", "DELETE", "UPDATE"]
+        apiGroups: [ "apps", "" ]
+        apiVersions: [ "v1" ]
+        resources: [ "deployments","services","pods", "configmaps" ]
+#      - operations: ["*"]
+#        apiGroups: [ "*" ]
+#        apiVersions: [ "*" ]
+#        resources: [ "*" ]
+    namespaceSelector:
+      matchLabels:
+        admission-webhook: enabled

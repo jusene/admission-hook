@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-configmap
+data:
+  test: "1"
+  webhook-e2e-test: "webhook-disallow"
+  mutation-start: "yes"
+  mutation-stage-1: "yes"

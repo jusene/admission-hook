@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webhook-to-be-mutated
+  labels:
+    app: sleep
+spec:
+  containers:
+    - name: container1
+      image: busybox
+      command: [ "/bin/sleep","infinity" ]
+      imagePullPolicy: IfNotPresent
